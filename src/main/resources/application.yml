@@ -1,0 +1,21 @@
+fritzbox:
+  url: http://fritz.box
+  user: admin
+  password: "xxx"
+  deviceConfigs:
+    -
+      name: "FRITZ!DECT 200 #1"
+      standbyInWatt: 10
+      waitInSeconds: 300
+      startMessage: "Washingmachine running."
+      stopMessage: "Washingmachine ready."
+telegram:
+  token: xxx
+  botUsername: botusername
+  allowedNumbers:
+    - +49xxx
+intervalInMS: 2000
+logging:
+  level.de.veltrus.gotShitDone.telegram.KnownChatIds: debug
+spring.jpa.hibernate.ddl-auto: update
+spring.datasource.url: jdbc:h2:./h2.database
