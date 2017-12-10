@@ -66,7 +66,7 @@ public class GSDTelegramLongPollingBot extends TelegramLongPollingBot {
             }
         } else {
             sendMessage(update.getMessage().getChatId(), "Your number could not be verified. Try again. Or fuck off.");
-            log.warn("Error validating number {} with chat id {}.", update.getMessage().getContact().getPhoneNumber(), update.getMessage().getChatId());
+            log.warn("Error validating number with chat id {}.", update.getMessage().getChatId());
         }
     }
 
