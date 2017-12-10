@@ -59,6 +59,7 @@ public class GSDTelegramLongPollingBot extends TelegramLongPollingBot {
             Contact contact = update.getMessage().getContact();
             if (chatIds.getChatIdContact(chatId).isPresent()) {
                 log.info("Chat id {} with number {} already known.", chatId, contact.getPhoneNumber());
+                sendMessage(chatId, "I already know your number.");
             } else {
                 sendMessage(chatId, "You verified successfully verified your number.");
                 chatIds.addChatId(chatId, contact);
