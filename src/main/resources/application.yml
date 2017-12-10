@@ -6,9 +6,9 @@ fritzbox:
     -
       name: "FRITZ!DECT 200 #1"
       standbyInWatt: 10
-      waitInSeconds: 300
+      waitInSeconds: 600
       startMessage: "Washingmachine running."
-      stopMessage: "Washingmachine ready."
+      stopMessage: "Washingmachine ready. Costs: {COST}, Consumption: {WH}."
 telegram:
   token: xxx
   botUsername: botusername

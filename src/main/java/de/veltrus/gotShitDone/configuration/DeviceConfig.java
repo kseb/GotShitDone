@@ -15,4 +15,5 @@ public class DeviceConfig {
     private long waitInSeconds;
     private String startMessage;
     private String stopMessage;
+    private double pricePerKwh;
 }

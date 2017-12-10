@@ -13,8 +13,9 @@ import java.time.LocalDateTime;
 public class MeasuredDeviceInfo {
     private float watt;
     private LocalDateTime time;
+    private int wattHours;
 
-    public static MeasuredDeviceInfo create(float watt) {
-        return new MeasuredDeviceInfo(watt, LocalDateTime.now());
+    public static MeasuredDeviceInfo create(float watt, int wattHours) {
+        return new MeasuredDeviceInfo(watt, LocalDateTime.now(), wattHours);
     }
 }

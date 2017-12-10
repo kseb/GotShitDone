@@ -19,8 +19,8 @@ public class LatestDeviceInfos {
         deviceInfos.put(deviceName, info);
     }
 
-    public void removeDeviceInfo(String deviceName) {
-        deviceInfos.remove(deviceName);
+    public MeasuredDeviceInfo removeDeviceInfo(String deviceName) {
+        return deviceInfos.remove(deviceName);
     }
 
 }

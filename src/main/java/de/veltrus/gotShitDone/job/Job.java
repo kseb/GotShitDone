@@ -5,6 +5,7 @@ import de.veltrus.gotShitDone.configuration.DeviceConfig;
 import de.veltrus.gotShitDone.telegram.GSDTelegramLongPollingBot;
 import de.veltrus.gotShitDone.telegram.KnownChatIds;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -34,13 +35,25 @@ public class Job implements Runnable {
         Optional<MeasuredDeviceInfo> info = latestDeviceInfos.getDeviceInfoForDeviceName(device.getName());
         if (device.getPowerMeter().getPowerWatt() > deviceConfig.getStandbyInWatt()) {
             if (!info.isPresent()) {
+                int energyWattHours = device.getPowerMeter().getEnergyWattHours();
+                latestDeviceInfos.putDeviceInfo(device.getName(),
+                        MeasuredDeviceInfo.create(device.getPowerMeter().getPowerWatt(), energyWattHours));
                 sendMessage(deviceConfig.getStartMessage());
                 log.info("Device {} started working.", deviceConfig.getName());
+            } else {
+                latestDeviceInfos.putDeviceInfo(device.getName(),
+                        MeasuredDeviceInfo.create(device.getPowerMeter().getPowerWatt(),
+                                latestDeviceInfos.getDeviceInfoForDeviceName(device.getName()).get().getWattHours()));
             }
-            latestDeviceInfos.putDeviceInfo(device.getName(), MeasuredDeviceInfo.create(device.getPowerMeter().getPowerWatt()));
         } else if (info.isPresent() && deviceConfig.getWaitInSeconds() < Duration.between(info.get().getTime(), LocalDateTime.now()).getSeconds()) {
-            latestDeviceInfos.removeDeviceInfo(deviceConfig.getName());
-            sendMessage(deviceConfig.getStopMessage());
+            MeasuredDeviceInfo measuredDeviceInfo = latestDeviceInfos.removeDeviceInfo(deviceConfig.getName());
+            int startWattHours = measuredDeviceInfo.getWattHours();
+            int endWattHours = device.getPowerMeter().getEnergyWattHours();
+            double consumption = endWattHours - startWattHours;
+            double cost = consumption / 1000. * deviceConfig.getPricePerKwh();
+            String consumptionString = String.format("%.0f", consumption);
+            String costString = String.format("%.2f", cost);
+            sendMessage(StringUtils.replace(StringUtils.replace(deviceConfig.getStopMessage(), "{COST}", costString), "{WH}", consumptionString));
             log.info("Device {} is ready.", deviceConfig.getName());
         }
     }
