@@ -6,7 +6,8 @@ GotShitDone is a spring boot app which can send you a
 notification via [Telegram](https://telegram.org/) when a device connected to a
 [fritz!dect](https://avm.de/produkte/fritzdect/fritzdect-200) starts and stops
 working. It can handle as many devices as you want and the standby power consumption is
-configurable as well as the notification messages.
+configurable as well as the notification messages. The stop message includes the cost and 
+power consumption for the last job.
 
 ## Create your own Telegram bot
 
@@ -31,9 +32,10 @@ The configuration has to be in a config directory next to the jar file. It looks
         -
           name: "FRITZ!DECT 200 #1"
           standbyInWatt: 10
-          waitInSeconds: 300
+          waitInSeconds: 600
           startMessage: "Washingmachine running."
-          stopMessage: "Washingmachine ready."
+          stopMessage: "Washingmachine ready. Costs: {COST}, Consumption: {WH}."
+          pricePerKwh: 0.28025
     telegram:
       token: xxx
       botUsername: botusername
@@ -46,7 +48,7 @@ The configuration has to be in a config directory next to the jar file. It looks
     spring.datasource.url: jdbc:h2:./h2.database
     
 `waitInSeconds` is the time the device has to use less power than `standbyInWatt` to 
-send the `stopMessage`.
+send the `stopMessage`. The `pricePerKwh` is used to generate the `{COST}` in the `stopMessage`.
 
 ## Authorization
 

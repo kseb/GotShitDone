@@ -9,6 +9,7 @@ fritzbox:
       waitInSeconds: 600
       startMessage: "Washingmachine running."
       stopMessage: "Washingmachine ready. Costs: {COST}, Consumption: {WH}."
+      pricePerKwh: 0.28025
 telegram:
   token: xxx
   botUsername: botusername
