@@ -49,11 +49,10 @@ public class Job implements Runnable {
             MeasuredDeviceInfo measuredDeviceInfo = latestDeviceInfos.removeDeviceInfo(deviceConfig.getName());
             int startWattHours = measuredDeviceInfo.getWattHours();
             int endWattHours = device.getPowerMeter().getEnergyWattHours();
-            double consumption = endWattHours - startWattHours;
+            int consumption = endWattHours - startWattHours;
             double cost = consumption / 1000. * deviceConfig.getPricePerKwh();
-            String consumptionString = String.format("%.0f", consumption);
             String costString = String.format("%.2f", cost);
-            sendMessage(StringUtils.replace(StringUtils.replace(deviceConfig.getStopMessage(), "{COST}", costString), "{WH}", consumptionString));
+            sendMessage(StringUtils.replace(StringUtils.replace(deviceConfig.getStopMessage(), "{COST}", costString), "{WH}", String.valueOf(consumption)));
             log.info("Device {} is ready.", deviceConfig.getName());
         }
     }
