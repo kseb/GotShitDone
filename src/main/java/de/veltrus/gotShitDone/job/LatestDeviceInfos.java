@@ -1,5 +1,6 @@
 package de.veltrus.gotShitDone.job;
 
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
+@ToString
 public class LatestDeviceInfos {
 
     private Map<String, MeasuredDeviceInfo> deviceInfos = new HashMap<>();

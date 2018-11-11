@@ -1,15 +1,13 @@
 package de.veltrus.gotShitDone.job;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@ToString
 public class MeasuredDeviceInfo {
     private float watt;
     private LocalDateTime time;
