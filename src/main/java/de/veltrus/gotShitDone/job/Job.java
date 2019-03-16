@@ -33,19 +33,20 @@ public class Job implements Runnable {
     @Override
     public void run() {
         Optional<MeasuredDeviceInfo> info = latestDeviceInfos.getDeviceInfoForDeviceName(device.getName());
-        if (device.getPowerMeter().getPowerWatt() > deviceConfig.getStandbyInWatt()) {
+        float powerWatt = device.getPowerMeter().getPowerWatt();
+        if (powerWatt > deviceConfig.getStandbyInWatt()) {
             if (!info.isPresent()) {
                 int energyWattHours = device.getPowerMeter().getEnergyWattHours();
                 latestDeviceInfos.putDeviceInfo(device.getName(),
-                        MeasuredDeviceInfo.create(device.getPowerMeter().getPowerWatt(), energyWattHours));
+                        MeasuredDeviceInfo.create(powerWatt, energyWattHours));
                 sendMessage(deviceConfig.getStartMessage());
                 log.info("Device {} started working.", deviceConfig.getName());
             } else {
                 latestDeviceInfos.putDeviceInfo(device.getName(),
-                        MeasuredDeviceInfo.create(device.getPowerMeter().getPowerWatt(),
+                        MeasuredDeviceInfo.create(powerWatt,
                                 latestDeviceInfos.getDeviceInfoForDeviceName(device.getName()).get().getWattHours()));
             }
-        } else if (info.isPresent() && deviceConfig.getWaitInSeconds() < Duration.between(info.get().getTime(), LocalDateTime.now()).getSeconds()) {
+        } else if (info.isPresent() && powerWatt >= 0 && deviceConfig.getWaitInSeconds() < Duration.between(info.get().getTime(), LocalDateTime.now()).getSeconds()) {
             MeasuredDeviceInfo measuredDeviceInfo = latestDeviceInfos.removeDeviceInfo(deviceConfig.getName());
             int startWattHours = measuredDeviceInfo.getWattHours();
             int endWattHours = device.getPowerMeter().getEnergyWattHours();
