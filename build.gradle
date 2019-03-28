@@ -22,10 +22,6 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 
-jar {
-    archiveName = 'GotShitDone.jar'
-}
-
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter'
     compile "org.springframework.boot:spring-boot-configuration-processor"
