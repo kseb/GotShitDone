@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class KnownChatIds {
 
     @Autowired
-    ChatIdsRepository repo;
+    private ChatIdsRepository repo;
 
     public void addChatId(Long id, Contact contact) {
         log.info("Added chat id {}, number {}.", id, contact.getPhoneNumber());
@@ -33,6 +33,6 @@ public class KnownChatIds {
     }
 
     public Optional<ChatIdContact> getChatIdContact(Long id) {
-        return Optional.ofNullable(repo.findOne(id));
+        return repo.findById(id);
     }
 }
