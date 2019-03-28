@@ -34,6 +34,7 @@ public class Job implements Runnable {
     public void run() {
         Optional<MeasuredDeviceInfo> info = latestDeviceInfos.getDeviceInfoForDeviceName(device.getName());
         float powerWatt = device.getPowerMeter().getPowerWatt();
+        int endWattHours = device.getPowerMeter().getEnergyWattHours();
         if (powerWatt > deviceConfig.getStandbyInWatt()) {
             if (!info.isPresent()) {
                 int energyWattHours = device.getPowerMeter().getEnergyWattHours();
@@ -46,10 +47,9 @@ public class Job implements Runnable {
                         MeasuredDeviceInfo.create(powerWatt,
                                 latestDeviceInfos.getDeviceInfoForDeviceName(device.getName()).get().getWattHours()));
             }
-        } else if (info.isPresent() && powerWatt >= 0 && deviceConfig.getWaitInSeconds() < Duration.between(info.get().getTime(), LocalDateTime.now()).getSeconds()) {
+        } else if (info.isPresent() && powerWatt >= 0 && endWattHours > 0 && deviceConfig.getWaitInSeconds() < Duration.between(info.get().getTime(), LocalDateTime.now()).getSeconds()) {
             MeasuredDeviceInfo measuredDeviceInfo = latestDeviceInfos.removeDeviceInfo(deviceConfig.getName());
             int startWattHours = measuredDeviceInfo.getWattHours();
-            int endWattHours = device.getPowerMeter().getEnergyWattHours();
             int consumption = endWattHours - startWattHours;
             double cost = consumption / 1000. * deviceConfig.getPricePerKwh();
             String costString = String.format("%.2f", cost);
