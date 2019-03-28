@@ -26,7 +26,10 @@ public class GSDTelegramLongPollingBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.getMessage() != null && update.getMessage().getText() != null && update.getMessage().getText().equals(("/start"))) {
+        if (update.getMessage() == null) {
+            return;
+        }
+        if (update.getMessage().getText() != null && update.getMessage().getText().equals(("/start"))) {
             SendMessage sendMessage = new SendMessage()
                     .setChatId(update.getMessage().getChatId())
                     .setText("Please validate your number.");
