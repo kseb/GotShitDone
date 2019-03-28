@@ -30,7 +30,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter'
     compile "org.springframework.boot:spring-boot-configuration-processor"
     compile "org.springframework.boot:spring-boot-starter-validation"
-    compile 'com.github.kseb:fritzbox-java-api:0.5.1'
+    compile 'com.github.kaklakariada:fritzbox-java-api:0.6.0'
     compileOnly 'org.projectlombok:lombok:1.18.6'
     annotationProcessor 'org.projectlombok:lombok:1.18.6'
     compile "org.telegram:telegrambots:3.5"
