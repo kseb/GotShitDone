@@ -4,11 +4,10 @@ import com.github.kaklakariada.fritzbox.FritzBoxException;
 import com.github.kaklakariada.fritzbox.HomeAutomation;
 import com.github.kaklakariada.fritzbox.model.homeautomation.Device;
 import de.veltrus.gotShitDone.configuration.Config;
-import de.veltrus.gotShitDone.configuration.TelegramConfig;
 import de.veltrus.gotShitDone.telegram.GSDTelegramLongPollingBot;
 import de.veltrus.gotShitDone.telegram.KnownChatIds;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -19,28 +18,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class Scheduler {
 
     private static final int TIMEOUT_IN_SECONDS = 5000;
 
-    @Autowired
-    TelegramConfig telegramConfig;
+    private final Config config;
 
-    @Autowired
-    private Config config;
+    private final HomeAutomation fritz;
 
-    @Autowired
-    private HomeAutomation fritz;
+    private final LatestDeviceInfos latestDeviceInfos;
 
-    @Autowired
-    private LatestDeviceInfos latestDeviceInfos;
+    private final GSDTelegramLongPollingBot bot;
 
-    @Autowired
-    private GSDTelegramLongPollingBot bot;
-
-    @Autowired
-    private KnownChatIds chatIds;
+    private final KnownChatIds chatIds;
 
     @Scheduled(fixedDelayString = "${intervalInMS}")
     public void init() {

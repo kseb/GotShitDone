@@ -11,17 +11,17 @@ import java.util.Optional;
 @ToString
 public class LatestDeviceInfos {
 
-    private Map<String, MeasuredDeviceInfo> deviceInfos = new HashMap<>();
+    private final Map<String, MeasuredDeviceInfo> deviceInfos = new HashMap<>();
 
-    public Optional<MeasuredDeviceInfo> getDeviceInfoForDeviceName(String name) {
+    Optional<MeasuredDeviceInfo> getDeviceInfoForDeviceName(String name) {
         return Optional.ofNullable(deviceInfos.get(name));
     }
 
-    public void putDeviceInfo(String deviceName, MeasuredDeviceInfo info) {
+    void putDeviceInfo(String deviceName, MeasuredDeviceInfo info) {
         deviceInfos.put(deviceName, info);
     }
 
-    public MeasuredDeviceInfo removeDeviceInfo(String deviceName) {
+    MeasuredDeviceInfo removeDeviceInfo(String deviceName) {
         return deviceInfos.remove(deviceName);
     }
 

@@ -3,8 +3,8 @@ package de.veltrus.gotShitDone.telegram;
 import de.veltrus.gotShitDone.persistence.ChatIdContact;
 import de.veltrus.gotShitDone.persistence.ChatIdsRepository;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.api.objects.Contact;
 
@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 
 @Component
 @Getter
+@RequiredArgsConstructor
 @Slf4j
 public class KnownChatIds {
 
-    @Autowired
-    private ChatIdsRepository repo;
+    private final ChatIdsRepository repo;
 
-    public void addChatId(Long id, Contact contact) {
+    void addChatId(Long id, Contact contact) {
         log.info("Added chat id {}, number {}.", id, contact.getPhoneNumber());
         repo.save(new ChatIdContact(id, contact.getPhoneNumber(), contact.getFirstName(), contact.getLastName(), contact.getUserID()));
     }
@@ -32,7 +32,7 @@ public class KnownChatIds {
                 .collect(Collectors.toList());
     }
 
-    public Optional<ChatIdContact> getChatIdContact(Long id) {
+    Optional<ChatIdContact> getChatIdContact(Long id) {
         return repo.findById(id);
     }
 }

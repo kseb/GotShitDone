@@ -8,12 +8,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @ToString
-public class MeasuredDeviceInfo {
+class MeasuredDeviceInfo {
     private float watt;
     private LocalDateTime time;
     private int wattHours;
 
-    public static MeasuredDeviceInfo create(float watt, int wattHours) {
+    static MeasuredDeviceInfo create(float watt, int wattHours) {
         return new MeasuredDeviceInfo(watt, LocalDateTime.now(), wattHours);
     }
 }

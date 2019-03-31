@@ -4,6 +4,7 @@ import com.github.kaklakariada.fritzbox.model.homeautomation.Device;
 import de.veltrus.gotShitDone.configuration.DeviceConfig;
 import de.veltrus.gotShitDone.telegram.GSDTelegramLongPollingBot;
 import de.veltrus.gotShitDone.telegram.KnownChatIds;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -14,21 +15,14 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
-public class Job implements Runnable {
+@RequiredArgsConstructor
+class Job implements Runnable {
 
+    private final Device device;
+    private final DeviceConfig deviceConfig;
     private final LatestDeviceInfos latestDeviceInfos;
     private final GSDTelegramLongPollingBot bot;
-    private Device device;
-    private DeviceConfig deviceConfig;
-    private KnownChatIds chatIds;
-
-    public Job(Device device, DeviceConfig deviceConfig, LatestDeviceInfos latestDeviceInfos, GSDTelegramLongPollingBot bot, KnownChatIds chatIds) {
-        this.deviceConfig = deviceConfig;
-        this.device = device;
-        this.latestDeviceInfos = latestDeviceInfos;
-        this.bot = bot;
-        this.chatIds = chatIds;
-    }
+    private final KnownChatIds chatIds;
 
     @Override
     public void run() {
