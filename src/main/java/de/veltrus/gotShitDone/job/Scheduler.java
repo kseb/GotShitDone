@@ -1,5 +1,6 @@
 package de.veltrus.gotShitDone.job;
 
+import com.github.kaklakariada.fritzbox.FritzBoxException;
 import com.github.kaklakariada.fritzbox.HomeAutomation;
 import com.github.kaklakariada.fritzbox.model.homeautomation.Device;
 import de.veltrus.gotShitDone.configuration.Config;
@@ -43,7 +44,14 @@ public class Scheduler {
 
     @Scheduled(fixedDelayString = "${intervalInMS}")
     public void init() {
-        List<Device> deviceListInfosFritzbox = fritz.getDeviceListInfos().getDevices();
+        List<Device> deviceListInfosFritzbox;
+        try {
+            deviceListInfosFritzbox = fritz.getDeviceListInfos().getDevices();
+        } catch (FritzBoxException e) {
+            log.error("Error reaching or logging in to fritz box. Trying to reconnect.");
+            config.reconnect();
+            return;
+        }
         List<Job> jobs = config.getDeviceConfigs()
                 .stream()
                 .map(deviceConfig -> new Job(deviceListInfosFritzbox

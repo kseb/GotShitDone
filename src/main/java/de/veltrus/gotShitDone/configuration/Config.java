@@ -5,6 +5,7 @@ import com.github.kaklakariada.fritzbox.model.homeautomation.Device;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @ConfigurationProperties(prefix = "fritzbox")
 @Getter
 @Setter
+@Slf4j
 @ToString
 public class Config {
 
@@ -26,10 +28,6 @@ public class Config {
     private String password;
 
     private List<DeviceConfig> deviceConfigs;
-
-    public Optional<DeviceConfig> getDeviceConfigByName(String name) {
-        return deviceConfigs.stream().filter(config -> name.equals(config.getName())).findAny();
-    }
 
     @PostConstruct
     public void validate() {
@@ -45,6 +43,11 @@ public class Config {
 
     @Bean
     public HomeAutomation fritz() {
+        log.info("Logging in to {} with user {}.", this.getUrl(), this.getUser());
         return HomeAutomation.connect(this.getUrl(), this.getUser(), this.getPassword());
+    }
+
+    public void reconnect() {
+        fritz();
     }
 }
