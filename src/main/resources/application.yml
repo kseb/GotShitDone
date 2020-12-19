@@ -19,4 +19,10 @@ intervalInMS: 2000
 logging:
   level.de.veltrus.gotShitDone.telegram.KnownChatIds: debug
 spring.jpa.hibernate.ddl-auto: update
-spring.datasource.url: jdbc:h2:./h2.database
+spring.datasource:
+  url: jdbc:h2:./h2.database
+  username: sa
+  password:
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
