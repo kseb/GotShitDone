@@ -45,7 +45,13 @@ The configuration has to be in a config directory next to the jar file. It looks
     logging:
       level.de.veltrus.gotShitDone.telegram.KnownChatIds: debug
     spring.jpa.hibernate.ddl-auto: update
-    spring.datasource.url: jdbc:h2:./h2.database
+    spring.datasource:
+        url: jdbc:h2:./h2.database
+        username: sa
+        password:
+    spring:
+        jpa:
+            database-platform: org.hibernate.dialect.H2Dialect
     
 `waitInSeconds` is the time the device has to use less power than `standbyInWatt` to 
 send the `stopMessage`. The `pricePerKwh` is used to generate the `{COST}` in the `stopMessage`.
