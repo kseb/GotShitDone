@@ -26,8 +26,6 @@ public class Scheduler {
 
     private final Config config;
 
-    private final HomeAutomation fritz;
-
     private final LatestDeviceInfos latestDeviceInfos;
 
     private final GSDTelegramLongPollingBot bot;
@@ -38,10 +36,9 @@ public class Scheduler {
     public void init() {
         List<Device> deviceListInfosFritzbox;
         try {
-            deviceListInfosFritzbox = fritz.getDeviceListInfos().getDevices();
+            deviceListInfosFritzbox = config.getFritz().getDeviceListInfos().getDevices();
         } catch (FritzBoxException e) {
             log.error("Error reaching or logging in to fritz box. Trying to reconnect.", e);
-            fritz.logout();
             config.reconnectToFritzBox();
             return;
         }

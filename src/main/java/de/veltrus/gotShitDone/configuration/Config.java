@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 @Configuration
 @ConfigurationProperties(prefix = "fritzbox")
-@Getter
 @Setter
 @Slf4j
 @ToString
@@ -27,7 +26,10 @@ public class Config {
     private String user;
     private String password;
 
+    @Getter
     private List<DeviceConfig> deviceConfigs;
+    @Getter
+    private HomeAutomation fritz;
 
     @PostConstruct
     public void validate() {
@@ -41,13 +43,20 @@ public class Config {
         }
     }
 
-    @Bean(destroyMethod = "logout")
     public HomeAutomation fritz() {
-        log.info("Logging in to {} with user {}.", this.getUrl(), this.getUser());
-        return HomeAutomation.connect(this.getUrl(), this.getUser(), this.getPassword());
+        if (fritz == null) {
+            fritz = connect();
+        }
+        return fritz;
+    }
+
+    private HomeAutomation connect() {
+        return HomeAutomation.connect(url, user, password);
     }
 
     public void reconnectToFritzBox() {
+        fritz.logout();
+        fritz = null;
         fritz();
     }
 }
