@@ -40,8 +40,9 @@ public class Scheduler {
         try {
             deviceListInfosFritzbox = fritz.getDeviceListInfos().getDevices();
         } catch (FritzBoxException e) {
-            log.error("Error reaching or logging in to fritz box. Trying to reconnect.");
-            config.reconnect();
+            log.error("Error reaching or logging in to fritz box. Trying to reconnect.", e);
+            fritz.logout();
+            config.reconnectToFritzBox();
             return;
         }
         List<Job> jobs = config.getDeviceConfigs()

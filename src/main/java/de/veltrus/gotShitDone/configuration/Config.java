@@ -41,13 +41,13 @@ public class Config {
         }
     }
 
-    @Bean
+    @Bean(destroyMethod = "logout")
     public HomeAutomation fritz() {
         log.info("Logging in to {} with user {}.", this.getUrl(), this.getUser());
         return HomeAutomation.connect(this.getUrl(), this.getUser(), this.getPassword());
     }
 
-    public void reconnect() {
+    public void reconnectToFritzBox() {
         fritz();
     }
 }
