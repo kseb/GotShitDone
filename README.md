@@ -1,5 +1,11 @@
 # GotShitDone
 
+>[!WARNING]
+>## Archived
+>
+>This project is no longer actively maintained and has been archived.
+
+
 ## Intro
 
 GotShitDone is a spring boot app which can send you a 
